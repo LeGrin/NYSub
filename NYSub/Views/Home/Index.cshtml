@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/DistanceByLonLat.js"></script>
+<script src="~/Scripts/InterfaceScripts.js"></script>
+    <div class="style-1 style-4 row text-center">
+            <label for="lookups1">Distance from </label>
+            <input id="lookups1" name="station1" type="text" placeholder="first station" />
+            <label for="lookups2"> to </label>
+            <input id="lookups2" name="station2" type="text" placeholder="second station" />
+            <label id="distance">is inf</label>
+    </div>
+<hr />
+
+        <div id="map" hidden="hidden" class="map row">
+            <div id="embedded-map-canvas">
+                <iframe id="mapframe" style="height:400px;width:100%;border:0px;margin:0px;" frameborder="0"
+                        src=""></iframe>
+            </div>
+        </div>
+    
+
+<script>
+    debugger;
+    var data =  @Html.Raw(Json.Encode(Model.LookupStations()));
+    OnLoad();
+</script>
+
+

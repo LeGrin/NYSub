@@ -1,0 +1,55 @@
+﻿.style-1 label {
+  display:compact;
+  position:relative;
+  font-family: sans-serif;
+  font-size: 24px;
+  border-radius: 0%;
+  padding:3%;
+  word-wrap: break-word;
+    }
+input[type="text"] {
+  margin: 0;
+  display:inline-block;
+  position:relative;
+  font-family: sans-serif;
+  font-size: 22px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: 0%;
+}
+input[type="text"]:focus {
+  outline: none;
+}
+.style-4 input[type="text"] {
+  padding: 10px;
+  border: none;
+  position: relative;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+.style-4 input[type="text"]:focus,
+.style-4 input[type="text"].focus {
+  border-bottom: solid 2px #969696;
+}
+div.relative {
+    position: relative;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+}
+#embedded-map-canvas img {
+        max-width: none !important;
+        background: none !important;
+        font-size: inherit;
+}
+div.map {
+text-decoration:none;
+overflow:hidden;
+left:0%;
+right:0%;
+height:100%;
+width:100%;
+padding:0px;
+margin:0px;
+display:normal;
+}

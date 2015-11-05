@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NYSub", "NYSub\NYSub.csproj", "{F60516F6-BAAC-4ED8-A4D5-3FA1933D594B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NYSub.Tests", "NYSub.Tests\NYSub.Tests.csproj", "{83871FD7-E444-4169-8AA3-A612734276D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{15280A2F-D97B-4A4F-B6C2-512044E9CEAF}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureVMPublishModule.psm1 = PublishScripts\AzureVMPublishModule.psm1
+		PublishScripts\Publish-WebApplicationVM.ps1 = PublishScripts\Publish-WebApplicationVM.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{1A99BC2A-25E5-481E-A73F-5FAA6037F25E}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\NYSub-WAWS-dev.json = PublishScripts\Configurations\NYSub-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "Zip\ICSharpCode.SharpZLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F60516F6-BAAC-4ED8-A4D5-3FA1933D594B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60516F6-BAAC-4ED8-A4D5-3FA1933D594B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60516F6-BAAC-4ED8-A4D5-3FA1933D594B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60516F6-BAAC-4ED8-A4D5-3FA1933D594B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83871FD7-E444-4169-8AA3-A612734276D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83871FD7-E444-4169-8AA3-A612734276D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83871FD7-E444-4169-8AA3-A612734276D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83871FD7-E444-4169-8AA3-A612734276D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1A99BC2A-25E5-481E-A73F-5FAA6037F25E} = {15280A2F-D97B-4A4F-B6C2-512044E9CEAF}
+	EndGlobalSection
+EndGlobal
