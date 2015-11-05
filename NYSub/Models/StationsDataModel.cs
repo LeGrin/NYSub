@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Web;
-using System.Diagnostics;
+using System.Threading;
 
 namespace NYSub.Models
 {
@@ -18,24 +16,14 @@ namespace NYSub.Models
         }
 
         private List<Station> _stations;
-        private bool _dataSourceUpdated;
-        private DateTime _lastUpdate;
         private FileInfo _localFile = new FileInfo((HttpRuntime.AppDomainAppId == null ? @"C:\Temp" : HttpRuntime.AppDomainAppPath) + @"\Content\Downloads\stations.zip");
-        private string _dataURL = "http://web.mta.info/developers/data/nyct/subway/google_transit.zip";
-        private DateTime FileDate;
-        private bool _remoteFileExists;
+
 
         public StationsDataModel()
         {
-            FileExists();
-            GetFileDate();
-            _lastUpdate = _localFile.CreationTime;
-            Debug.WriteLine("Remote file is" + (_remoteFileExists ? " accessible" : " unavaliable"));
-            Debug.WriteLine("Remote file date is:" + FileDate);
-            Debug.WriteLine("Local file date is:" + _lastUpdate);
-            _dataSourceUpdated = (_lastUpdate < FileDate);
-            if (Stations == null || _dataSourceUpdated) GetStations();
+            if (Stations == null) GetStations();
         }
+
 
         public Dictionary<string, float[]> LookupStations()
         {
@@ -55,27 +43,17 @@ namespace NYSub.Models
 
         private void GetStations()
         {
-            _lastUpdate = DateTime.Now;
-            GetFile();
-        }
-
-        private void GetFileDate()
-        {
-                if (!_remoteFileExists) FileDate = _lastUpdate;
-                HttpWebRequest File = (HttpWebRequest)WebRequest.Create(_dataURL);
-                HttpWebResponse FileResponse = (HttpWebResponse)(File.GetResponse());
-                FileDate = FileResponse.LastModified;
-        }
-
-        private void GetFile()
-        {
+            if (!_localFile.Exists)
+            {
+                JobScheduler.ExecuteNow();
+                while (!_localFile.Exists)
+                {
+                    _localFile.Refresh();
+                    Thread.Sleep(50);
+                }
+            }
             var exctractfolder = _localFile.DirectoryName.ToString() + @"\exctract\";
-            if (_dataSourceUpdated) DownloadFile(_localFile.FullName);
-            var zip = new FastZip();
-            zip.ExtractZip(_localFile.FullName, exctractfolder, "");
-
             string line;
-
             StreamReader file =
                new StreamReader(exctractfolder + "stops.txt");
             file.ReadLine(); //skip header
@@ -83,49 +61,12 @@ namespace NYSub.Models
             while ((line = file.ReadLine()) != null)
             {
                 string[] entries = line.Split(',');
-                var station  = GetStation(entries);
+                var station = GetStation(entries);
                 if (!_stations.Contains(station))
                     _stations.Add(GetStation(entries));
             }
             file.Close();
         }
-
-        private void DownloadFile( string filename)
-        {
-            Debug.WriteLine("Downloading remote file");
-            if (_remoteFileExists)
-            {
-                using (var client = new WebClient())
-                {
-                        client.DownloadFile(_dataURL, filename);
-                }
-            }
-            if (!File.Exists(filename)) Debug.WriteLine("Failed to save file.");
-        }
-
-        private void FileExists()
-        {
-            HttpWebResponse response = null;
-            var request = (HttpWebRequest)WebRequest.Create(_dataURL);
-            request.Method = "HEAD";
-            try
-            {
-                response = (HttpWebResponse)(request.GetResponse());
-                _remoteFileExists = true;
-            }
-            catch (WebException)
-            {
-                _remoteFileExists = false;
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Close();
-                }
-            }
-        }
-
         private Station GetStation(string[] entries)
         {
             var station = new Station()
