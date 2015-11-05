@@ -5,6 +5,7 @@ using System.Net;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Web;
+using System.Diagnostics;
 
 namespace NYSub.Models
 {
@@ -19,16 +20,19 @@ namespace NYSub.Models
         private List<Station> _stations;
         private bool _dataSourceUpdated;
         private DateTime _lastUpdate;
-        private FileInfo _localFile = new FileInfo(HttpRuntime.AppDomainAppPath + @"\Content\Downloads\stations.zip");
+        private FileInfo _localFile = new FileInfo((HttpRuntime.AppDomainAppId == null ? @"C:\Temp" : HttpRuntime.AppDomainAppPath) + @"\Content\Downloads\stations.zip");
         private string _dataURL = "http://web.mta.info/developers/data/nyct/subway/google_transit.zip";
-        public DateTime FileDate;
-        private bool _fileExists;
+        private DateTime FileDate;
+        private bool _remoteFileExists;
 
         public StationsDataModel()
         {
             FileExists();
             GetFileDate();
             _lastUpdate = _localFile.CreationTime;
+            Debug.WriteLine("Remote file is" + (_remoteFileExists ? " accessible" : " unavaliable"));
+            Debug.WriteLine("Remote file date is:" + FileDate);
+            Debug.WriteLine("Local file date is:" + _lastUpdate);
             _dataSourceUpdated = (_lastUpdate < FileDate);
             if (Stations == null || _dataSourceUpdated) GetStations();
         }
@@ -57,7 +61,7 @@ namespace NYSub.Models
 
         private void GetFileDate()
         {
-                if (!_fileExists) FileDate = _lastUpdate;
+                if (!_remoteFileExists) FileDate = _lastUpdate;
                 HttpWebRequest File = (HttpWebRequest)WebRequest.Create(_dataURL);
                 HttpWebResponse FileResponse = (HttpWebResponse)(File.GetResponse());
                 FileDate = FileResponse.LastModified;
@@ -88,14 +92,15 @@ namespace NYSub.Models
 
         private void DownloadFile( string filename)
         {
-            if (_fileExists)
+            Debug.WriteLine("Downloading remote file");
+            if (_remoteFileExists)
             {
                 using (var client = new WebClient())
                 {
-                        client.DownloadFileAsync(new Uri(_dataURL), filename);
+                        client.DownloadFile(_dataURL, filename);
                 }
             }
-            if (!File.Exists(filename)) throw new Exception("NO avaliable data");
+            if (!File.Exists(filename)) Debug.WriteLine("Failed to save file.");
         }
 
         private void FileExists()
@@ -106,11 +111,11 @@ namespace NYSub.Models
             try
             {
                 response = (HttpWebResponse)(request.GetResponse());
-                _fileExists = true;
+                _remoteFileExists = true;
             }
             catch (WebException)
             {
-                _fileExists = false;
+                _remoteFileExists = false;
             }
             finally
             {

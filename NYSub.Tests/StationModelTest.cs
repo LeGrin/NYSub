@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NYSub.Tests
 {
@@ -13,7 +9,7 @@ namespace NYSub.Tests
     {
 
         [TestMethod]
-        public void GetAndDecompress()
+        public void TestGetFileAndDecompress()
         {
             var datamodel = new Models.StationsDataModel();
             var count = datamodel.Stations.Count();
@@ -22,7 +18,7 @@ namespace NYSub.Tests
         }
 
         [TestMethod]
-        public void GetLookup()
+        public void TestGetLookup()
         {
             var datamodel = new Models.StationsDataModel();
             Assert.IsNotNull(datamodel.LookupStations().FirstOrDefault());
